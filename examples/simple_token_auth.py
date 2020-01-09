@@ -2,10 +2,11 @@
 
 import crowd
 import os, sys, getpass
+from . import settings
 
-app_url = 'http://my.crowd.server:8095/crowd/'
-app_user = 'testapp'
-app_pass = 'testpass'
+app_url =  settings.app_url
+app_user = settings.app_user
+app_pass = settings.app_pass
 
 # Create the reusable Crowd object
 cs = crowd.CrowdServer(app_url, app_user, app_pass)
@@ -20,14 +21,14 @@ password = getpass.getpass(prompt='Enter password for %s: ' % username)
 # Create a session. The important bit is the token.
 session = cs.get_session(username, password)
 if session:
-    print 'Created a session, token %s' % session['token']
+    print('Created a session, token %s' % session['token'])
 else:
-    print 'Failed to authenticate.'
+    print('Failed to authenticate.')
     sys.exit(1)
 
 # Check that the token is valid (and of course it should be).
 success = cs.validate_session(session['token'])
 if success:
-    print 'Authenticated session token.'
+    print('Authenticated session token.')
 else:
-    print 'Failed to authenticate token.'
+    print('Failed to authenticate token.')

@@ -11,15 +11,10 @@ app_pass = settings.app_pass
 # Create the reusable Crowd object
 cs = crowd.CrowdServer(app_url, app_user, app_pass)
 
-if len(sys.argv) > 1:
-    username = sys.argv[1]
-else:
-    username = os.environ['USER']
 
-password = getpass.getpass(prompt='Enter password for %s: ' % username)
-
-success = cs.auth_user(username, password)
+success = cs.auth_ping()
 if success:
-    print('Successfully authenticated.')
+    print(f'Crowd session created:  \n\t {cs.session.cookies}')
+    
 else:
-    print('Failed to authenticate.')
+    print('Auth ping failed')

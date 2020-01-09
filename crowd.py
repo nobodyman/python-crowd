@@ -37,10 +37,12 @@ class CrowdServer(object):
 
     def __init__(self, crowd_url, app_name, app_pass, ssl_verify=True, 
                  timeout=None, client_cert=None):
+        crowd_url = crowd_url.rstrip("/")
         self.crowd_url = crowd_url
         self.app_name = app_name
         self.app_pass = app_pass
-        self.rest_url = crowd_url.rstrip("/") + "/rest/usermanagement/1"
+        self.rest_url = crowd_url + "/rest/usermanagement/1"
+        self.rest_admin_url = crowd_url + "/rest/admin/1.0"
         self.ssl_verify = ssl_verify
         self.client_cert = client_cert
         self.timeout = timeout
@@ -627,6 +629,13 @@ class CrowdServer(object):
             return None
 
         return True
+
+    def remove_user(self, username):
+        """Like add_user, but in the reverse"""
+        action = self.rest_url + '/user'
+        parms = {"username": username}
+        response = self._delete(action, params=parms)
+        return response
 
     def get_memberships(self):
         """Fetches all group memberships.

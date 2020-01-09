@@ -2,7 +2,7 @@
 
 import crowd
 import os, sys, getpass
-from examples import settings 
+from examples import settings
 
 app_url =  settings.app_url
 app_user = settings.app_user
@@ -12,13 +12,15 @@ app_pass = settings.app_pass
 cs = crowd.CrowdServer(app_url, app_user, app_pass)
 
 if len(sys.argv) > 1:
-    username = sys.argv[1]
+    deluser = sys.argv[1] 
 else:
-    username = os.environ['USER']
+    # deluser = os.environ['DELUSER']
+    deluser = '11@11.com';
 
-password = getpass.getpass(prompt='Enter password for %s: ' % username)
 
-success = cs.auth_user(username, password)
+
+
+success = cs.delete_user(deluser)
 if success:
     print('Successfully authenticated.')
 else:
